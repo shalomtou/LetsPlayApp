@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { registerElement } from '@nativescript/angular/element-registry';
 import { MapView, Marker, Position } from 'nativescript-google-maps-sdk';
+import * as geolocation from "nativescript-geolocation";
 
 
 // Important - must register MapView plugin in order to use in Angular templates
@@ -43,7 +44,7 @@ export class MapComponent implements OnInit {
     marker.title = "Tel-Aviv";
     marker.snippet = "Israel";
     marker.userData = { index: 1 };
-  
+
     this.mapView.addMarker(marker);
   }
 
@@ -65,4 +66,5 @@ export class MapComponent implements OnInit {
   onCameraMove(args) {
     console.log("Camera moving: " + JSON.stringify(args.camera));
   }
+
 }
