@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
 
   public latitude: number;
   public longitude: number;
-  private watchId: number;//
+  private watchId: number;
 
   public constructor(private zone: NgZone) {
     this.latitude = 0;

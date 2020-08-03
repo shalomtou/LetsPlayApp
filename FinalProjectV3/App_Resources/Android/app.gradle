@@ -11,11 +11,11 @@
 
 android {
   project.ext {
-  googlePlayServicesVersion = "16.+"
+    googlePlayServicesVersion = "16.+"
   }
   dependencies {
-  def googlePlayServicesVersion = project.googlePlayServicesVersion
-  compile "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
+    def googlePlayServicesVersion = project.googlePlayServicesVersion
+    compile "com.google.android.gms:play-services-location:$googlePlayServicesVersion"
   }
   compileSdkVersion 29
   defaultConfig {
