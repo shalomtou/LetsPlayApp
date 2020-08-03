@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Page } from "@nativescript/core/ui/page";
 import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
 
 
@@ -10,14 +11,16 @@ import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
 })
 export class TabsComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  constructor(public page: Page, public router: Router) { 
+    page.actionBarHidden = true;
+  }
 
   ngOnInit(): void {
   }
 
-  // onSelectedIndexchangedTab(args: SelectedIndexChangedEventData) {
-  //   let newIndex = args.newIndex;
-  // }
+  onSelectedIndexchangedTab(args: SelectedIndexChangedEventData) {
+    let newIndex = args.newIndex;
+  }
 
   goToMap() {
     this.router.navigate(['/map'])
