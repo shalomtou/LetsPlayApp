@@ -1,7 +1,8 @@
 # LetsPlayApp
 Social sport app
 
-# Angular Final Project
+# Angular Final Project -
+To run the project clone this repository -> go inside folder -> FinalProjectV3 -> open in VScode - and on the terminar run [npm i] (make sure that you are in the FinalPRojectV3), all the dependencies will the load and you will able to run the project by running on the terminal [tns run *android/IOS] or [tns preview].
 
 # Lets Play - Allways find someone to practice with.
 
