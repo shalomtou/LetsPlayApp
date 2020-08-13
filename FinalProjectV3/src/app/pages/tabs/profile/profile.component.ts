@@ -14,6 +14,9 @@ export class ProfileComponent implements OnInit {
 
   public user = firebase.auth().currentUser;
   public currentUser = new User()
+  // Adding label picker to be able to edit
+  public labelPicker: string = "default"
+
 
   public birthdatePicker = false
   minDate: Date = new Date(1975, 0, 29);
@@ -29,6 +32,15 @@ export class ProfileComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  // change to EDIT
+  editDetails(){
+    this.labelPicker = "edit_details"
+  }
+
+  defaultDetails(){
+    this.labelPicker = "default"
   }
 
   onLoaded(event) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import * as geolocation from "nativescript-geolocation";
-import * as GooglePlaces from 'nativescript-plugin-google-places';
+// import * as GooglePlaces from 'nativescript-plugin-google-places';
 import { Accuracy } from "tns-core-modules/ui/enums"; // used to describe at what accuracy the location should be get
 const firebase = require("nativescript-plugin-firebase");
 
@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   
   ngOnInit():void {
-    GooglePlaces.init();
+    // GooglePlaces.init();
     geolocation.enableLocationRequest();
     firebase.init({
       // Optionally pass in properties for database, authentication and cloud messaging,
