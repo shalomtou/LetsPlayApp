@@ -9,9 +9,9 @@ import { HomeComponent } from "./pages/tabs/home/home.component";
 import { ChatComponent } from "./pages/tabs/chat/chat.component";
 import { SettingsComponent } from "./pages/tabs/settings/settings.component";
 
-
+const HomePage = "login"
 const routes: Routes = [
-    { path: "", redirectTo: "/login", pathMatch: "full" },
+    { path: "", redirectTo: HomePage, pathMatch: "full" },
     { path: "login", component: LoginComponent },
     { path: "tabs", component: TabsComponent },
     { path: "map", component: MapComponent },
