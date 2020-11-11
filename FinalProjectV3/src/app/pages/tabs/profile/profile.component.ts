@@ -35,11 +35,11 @@ export class ProfileComponent implements OnInit {
   }
 
   // change to EDIT
-  editDetails(){
+  editDetails() {
     this.labelPicker = "edit_details"
   }
 
-  defaultDetails(){
+  defaultDetails() {
     this.labelPicker = "default"
   }
 
@@ -115,5 +115,6 @@ export class ProfileComponent implements OnInit {
     console.log("Year Old value: " + args.oldValue);
 
   }
+
 
 }

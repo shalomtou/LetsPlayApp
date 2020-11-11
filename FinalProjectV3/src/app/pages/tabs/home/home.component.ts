@@ -1,5 +1,10 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import * as Geolocation from "nativescript-geolocation";
+import { Component, OnInit, NgZone, ViewContainerRef } from '@angular/core';
+import { FeedInterface } from "../home/feed-interface"
+import { ModalDialogOptions, ModalDialogService, ModalDialogParams } from "@nativescript/angular/modal-dialog";
+const firebase = require('nativescript-plugin-firebase/app')
+import { AddPostComponent } from "./add-post/add-post.component";
+
+
 
 @Component({
   selector: 'ns-home',
@@ -8,57 +13,41 @@ import * as Geolocation from "nativescript-geolocation";
 })
 export class HomeComponent implements OnInit {
 
-  public latitude: number;
-  public longitude: number;
-  private watchId: number;
+  // need to add the collection and pull the posts
+  public postsCollection = firebase.firestore().collection("posts");
+  //public post = this.postsCollection
 
-  public constructor(private zone: NgZone) {
-    this.latitude = 0;
-    this.longitude = 0;
+  public feedList: Array<FeedInterface> = []
+
+  public constructor(private _modalService: ModalDialogService, private _vcRef: ViewContainerRef) {
   }
 
   ngOnInit(): void {
   }
 
-  private getDeviceLocation(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      Geolocation.enableLocationRequest().then(() => {
-        Geolocation.getCurrentLocation({ timeout: 10000 }).then(location => {
-          resolve(location);
-        }).catch(error => {
-          reject(error);
-        });
-      });
-    });
-  }
-
-
-  public updateLocation() {
-    this.getDeviceLocation().then(result => {
-      this.latitude = result.latitude;
-      this.longitude = result.longitude;
-    }, error => {
-      console.error(error);
-    });
-  }
-
-  public startWatchingLocation() {
-    this.watchId = Geolocation.watchLocation(location => {
-      if (location) {
-        this.zone.run(() => {
-          this.latitude = location.latitude;
-          this.longitude = location.longitude;
-        });
-      }
-    }, error => {
-      console.log(error);
-    }, { updateDistance: 1, minimumUpdateTime: 1000 });
-  }
-
-  public stopWatchingLocation() {
-    if (this.watchId) {
-      Geolocation.clearWatch(this.watchId);
-      this.watchId = null;
+  loadFeed() {
+    // loud the post from the collection 
+    for (let i = 0; i < 10; i++) {
+      this.feedList.push({
+        id: i,
+        image: `https://images.ctfassets.net/ticbtmcn8ib7/6A1X91pyvwiYdgwkExmMmS/fbe8ec9955beef00822d7ba64d44c458/soccer-ball-1200.jpg?w=900&q=50`,
+        context: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`
+      })
     }
+  }
+
+  createPost() {
+    // need to add the post to the collection
+    const options: ModalDialogOptions = {
+      viewContainerRef: this._vcRef,
+      context: {},
+      fullscreen: false
+    };
+
+    this._modalService.showModal(AddPostComponent, options)
+    .then((result: string) => {
+        console.log(result);
+    });
+
   }
 }

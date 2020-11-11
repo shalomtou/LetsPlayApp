@@ -26,19 +26,20 @@ Button.-primary {
 
 /* this is the font awsome */
 
-.fa-brands{
+.fa-brands {
     font-family: "Font Awesome 5 Brands Regular", "fa-brands-400";
 }
 
-.fa-regular{
+.fa-regular {
     font-family: "Font Awesome 5 Free Regular", "fa-regular-400";
     font-weight: 400;
 }
 
-.fa-solid{
+.fa-solid {
     font-family: "Font Awesome 5 Free Solid", "fa-solid-900";
     font-weight: 900;
 }
+
 /* untill here! */
 
 .page {
@@ -60,20 +61,33 @@ Button.-primary {
     color: whitesmoke;
 }
 
+.feed {
+    /* flex-grow: 2; */
+    vertical-align: middle;
+    color: black;
+}
+
+.feed-context {
+    text-align: center;
+    font-size: 14;
+    font-style: italic;
+    color: black;
+}
+
 .logo {
     margin-top: 5%;
     height: 100;
     text-align: center;
     font-weight: 400;
     font-family: monospace;
-    /* color: whitesmoke; */
+
 }
 
-.logo-img{
+.logo-img {
     margin-top: 6%;
 }
 
-.title{
+.title {
     font-weight: normal;
     font-style: normal;
     font-size: 65;
@@ -81,55 +95,81 @@ Button.-primary {
 
 }
 
-.sub-title{
+.sub-title {
     horizontal-align: center;
-    /* margin-top: 0%; */
     font-size: 25;
     font-weight: 200;
     margin-bottom: 10;
     text-align: center;
     color: black;
     height: auto;
-    color: whitesmoke;
 }
 
-.btn{
+
+.btn {
+    font-size: 18;
     align-items: center;
-    background-color:rgb(248, 245, 245);
+    background-color: rgb(248, 245, 245);
     border-radius: 70px;
     display: flex;
     height: 45;
     justify-content: center;
     margin-right: 4rem;
     width: 200;
-    box-shadow: 
-    12px 12px 16px 0 rgba(0, 0, 0, 0.25),
-    -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+    box-shadow:
+        12px 12px 16px 0 rgba(0, 0, 0, 0.25),
+        -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
 }
 
-.btn-sing-in{
+.btn-login {
     width: 250;
-    /* background-color:rgb(255, 255, 255); */
 }
 
-.forgot_password{
+.forgot_password {
     font-size: 12;
     text-align: center;
 }
 
-.f-s-35{
+.f-s-35 {
     font-size: 35;
 }
 
-.input{
-    font-size: 15;
-    color: whitesmoke;
+.input {
+    font-size: 18;
+    color: rgba(0, 0, 0, 0.767);
     padding-left: 5;
 }
 
-.label{
-    font-size:17 ;
+.label {
+    font-size: 20;
     text-align: center;
+    color: black;
 }
 
+.feed-box {
+    background-color: rgba(209, 197, 197, 0.76);
+    border-radius: 5%;
+}
+
+.add-post {
+    font-size: 22;
+    width: 50;
+    margin-right: 80;
+}
+
+.details-input {
+    background: rgba(206, 204, 204, 0.637);
+    font-size: 18;
+    text-align: center;
+    border-radius: 5%;
+    color: rgba(0, 0, 0, 0.719);
+}
+
+.no-change-input{
+    text-decoration: line-through;
+}
+
+.w-500{
+    width: 500;
+}
 

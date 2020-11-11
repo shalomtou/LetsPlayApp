@@ -17,6 +17,10 @@ import { ProfileComponent } from './pages/tabs/profile/profile.component';
 import { HomeComponent } from './pages/tabs/home/home.component';
 import { ChatComponent } from './pages/tabs/chat/chat.component';
 import { SettingsComponent } from './pages/tabs/settings/settings.component';
+import { TNSCheckBoxModule } from '@nstudio/nativescript-checkbox/angular';
+import { AddPostComponent } from './pages/tabs/home/add-post/add-post.component';
+
+
 
 // RadListView
 // import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
@@ -31,7 +35,8 @@ import { SettingsComponent } from './pages/tabs/settings/settings.component';
         NativeScriptFormsModule,
         NativeScriptHttpClientModule,
         // NativeScriptUIListViewModule,
-        AppRoutingModule
+        AppRoutingModule,
+        TNSCheckBoxModule,
     ],
     declarations: [
         AppComponent,
@@ -42,6 +47,7 @@ import { SettingsComponent } from './pages/tabs/settings/settings.component';
         HomeComponent,
         ChatComponent,
         SettingsComponent,
+        AddPostComponent,
     ],
     providers: [],
     schemas: [

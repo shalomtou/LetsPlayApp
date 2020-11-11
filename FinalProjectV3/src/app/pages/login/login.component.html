@@ -2,7 +2,7 @@
     <StackLayout class="form">
         <!-- <Button text="login works!" class="btn btn-primary"></Button> -->
         <Image src="~/app/assets/exercise.png" class="logo logo-img "></Image>
-        <Label class="logo title" text="LetsPlay"></Label>
+        <Label class="logo title" text="LetsPlay" ></Label>
 
         <StackLayout [ngSwitch]="labelPicker">
 
@@ -19,8 +19,8 @@
                     <TextField hint="Password" class="input item-form" secure="true" [(ngModel)] ="this.user.password"></TextField>
                     <StackLayout class="hr-light"></StackLayout>
                     <!-- Buttons -->
-                    <Button text="Login" class="btn btn-login m-t-20 " (tap)="loginButton()"></Button>
-                    <Button text="Sign In" class="btn btn-login m-t-20 btn-sing-in" (tap)="showRegister()"></Button>
+                    <Button text="Login" class="btn btn-login" (tap)="loginButton()"></Button>
+                    <Button text="Sign In" class="btn  " (tap)="showRegister()"></Button>
                     <Label text="Forgot Password?" class="forgot_password m-t-30 " (tap)="showForgotPass()"></Label>
                 </StackLayout>
             </StackLayout>

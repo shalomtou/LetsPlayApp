@@ -4,14 +4,14 @@
     <GridLayout class="page">
         <TabView selectedIndex="0" class="tab-view font-18 fa">
 
-            <StackLayout *tabItem="{title: 'Profile', iconSource: 'res://user'}">
-                <!-- <Button text="profile" class="btn btn-primary" (tap)="goToProfile()"></Button> -->
-                <ns-profile></ns-profile>
-            </StackLayout>
-
             <StackLayout *tabItem="{title: 'Feed', iconSource: 'res://home'}">
                 <!-- <Button text="home" class="btn btn-primary" (tap)="goToHome()"></Button> -->
                 <ns-home></ns-home>
+            </StackLayout>
+
+            <StackLayout *tabItem="{title: 'Profile', iconSource: 'res://user'}">
+                <!-- <Button text="profile" class="btn btn-primary" (tap)="goToProfile()"></Button> -->
+                <ns-profile></ns-profile>
             </StackLayout>
 
             <StackLayout class="form" *tabItem="{title: 'Maps', iconSource: 'res://compass'}">
