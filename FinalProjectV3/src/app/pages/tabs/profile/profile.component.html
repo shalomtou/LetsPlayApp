@@ -1,94 +1,204 @@
 <FlexboxLayout>
-    <StackLayout class="form">
-        <Label class="sub-title" text="Details" style="font-weight: 800;margin-top: 5;"></Label>
-        <ScrollView height="580">
-            <StackLayout [ngSwitch]="labelPicker">
-                <StackLayout *ngSwitchCase="'default'" (loaded)="onLoaded(event)">
-                    <!-- user_img -->
-                    <!-- <Image src=""></Image> -->
-                    <!-- USER ID -->
-                    <Label text="User ID" editable="false" class="label"></Label>
-                    <Label [text]="this.currentUser.user_uid" class="details-input no-change-input" ></Label>
-                    <!-- EMAIL -->
-                    <Label text="Email" editable="false" class="label"></Label>
-                    <Label hint="Email or Phone" class="details-input no-change-input" keyboardType="email" [text]="this.currentUser.email"></Label>
-                    <!-- PASSWORD -->
-                    <Label text="Password" editable="false" class="label"></Label>
-                    <Label hint="Password" secure="true" class="details-input" [text]="this.currentUser.password"></Label>
-                    <!-- BIRTH DATE -->
-                    <Label text="Birth Date" editable="false" class="label"></Label>
-                    <Label [text]="this.currentUser.user_birthdate" class="details-input"></Label>
-                    <!-- CITY -->
-                    <Label text="City" editable="false" class="label"></Label>
-                    <Label hint="City" class="details-input" keyboardType="email" [text]="this.currentUser.user_city"></Label>
-                    <!-- FIRST NAME -->
-                    <Label text="First Name" editable="false" class="label"></Label>
-                    <Label hint="First name" class="details-input" [text]="this.currentUser.user_first_name"></Label>
-                    <!-- LAST NAME -->
-                    <Label text="Last name" editable="false" class="label"></Label>
-                    <Label hint="Last name" [text]="this.currentUser.user_last_name" class="details-input"></Label>
-                    <!-- GENDER -->
-                    <Label text="Gender" editable="false" class="label"></Label>
-                    <Label hint="Gender" class="details-input" [text]="this.currentUser.user_gender"></Label>
-                    <!-- USERNAME -->
-                    <Label text="Username" editable="false" class="label"></Label>
-                    <Label hint="Username" [text]="this.currentUser.user_username" class="details-input"></Label>
-                    <!-- DISTANCE -->
-                    <Label text="{{this.currentUser.user_distance + ' Km'}}" class="label"></Label>
-                    <Slider [value]="this.currentUser.user_distance" minValue="0" maxValue="100"
-                        (valueChange)="onSliderValueChange($event)" class="p-0 m-0"></Slider>
-                    <Button row="0" col="1" text="Edit"  (tap)="editDetails()"></Button>
-                </StackLayout>
+  <StackLayout class="form">
+    <Label
+      class="sub-title"
+      text="Details"
+      style="font-weight: 800; margin-top: 5"
+    ></Label>
+    <ScrollView height="580">
+      <StackLayout [ngSwitch]="labelPicker">
+        <StackLayout *ngSwitchCase="'default'" (loaded)="onLoaded($event)">
+          <!-- user_img -->
+          <!-- <Image src=""></Image> -->
+          <!-- USER ID -->
+          <Label text="User ID" editable="false" class="label"></Label>
+          <Label
+            [text]="this.currentUser.user_uid"
+            class="details-input no-change-input"
+          ></Label>
+          <!-- EMAIL -->
+          <Label text="Email" editable="false" class="label"></Label>
+          <Label
+            hint="Email or Phone"
+            class="details-input no-change-input"
+            keyboardType="email"
+            [text]="this.currentUser.email"
+          ></Label>
+          <!-- PASSWORD -->
+          <Label text="Password" editable="false" class="label"></Label>
+          <Label
+            hint="Password"
+            secure="true"
+            class="details-input"
+            [text]="this.currentUser.password"
+          ></Label>
+          <!-- BIRTH DATE -->
+          <Label text="Birth Date" editable="false" class="label"></Label>
+          <Label
+            [text]="this.currentUser.user_birthdate"
+            class="details-input"
+          ></Label>
+          <!-- CITY -->
+          <Label text="City" editable="false" class="label"></Label>
+          <Label
+            hint="City"
+            class="details-input"
+            keyboardType="email"
+            [text]="this.currentUser.user_city"
+          ></Label>
+          <!-- FIRST NAME -->
+          <Label text="First Name" editable="false" class="label"></Label>
+          <Label
+            hint="First name"
+            class="details-input"
+            [text]="this.currentUser.user_first_name"
+          ></Label>
+          <!-- LAST NAME -->
+          <Label text="Last name" editable="false" class="label"></Label>
+          <Label
+            hint="Last name"
+            [text]="this.currentUser.user_last_name"
+            class="details-input"
+          ></Label>
+          <!-- GENDER -->
+          <Label text="Gender" editable="false" class="label"></Label>
+          <Label
+            hint="Gender"
+            class="details-input"
+            [text]="this.currentUser.user_gender"
+          ></Label>
+          <!-- USERNAME -->
+          <Label text="Username" editable="false" class="label"></Label>
+          <Label
+            hint="Username"
+            [text]="this.currentUser.user_username"
+            class="details-input"
+          ></Label>
+          <!-- DISTANCE -->
+          <Label
+            text="{{ this.currentUser.user_distance + ' Km' }}"
+            class="label"
+          ></Label>
+          <Slider
+            [value]="this.currentUser.user_distance"
+            minValue="0"
+            maxValue="100"
+            (valueChange)="onSliderValueChange($event)"
+            class="p-0 m-0"
+          ></Slider>
+          <Button row="0" col="1" text="Edit" (tap)="editDetails()"></Button>
+        </StackLayout>
 
-                <!-- CASE EDIT -->
-                <StackLayout *ngSwitchCase="'edit_details'" (loaded)="onLoaded(event)">
-                    <!-- USER ID -->
-                    <Label text="User ID" editable="false" class="label"></Label>
-                    <Label [text]="this.currentUser.user_uid" class="details-input"></Label>
-                    <!-- EMAIL -->
-                    <Label text="Email" editable="false" class="label"></Label>
-                    <Label class="details-input" keyboardType="email" [text]="this.currentUser.email"></Label>
-                    <!-- PASSWORD -->
-                    <Label text="Password" editable="false" class="label"></Label>
-                    <TextField class="details-input w-500"  [(ngModel)]="this.currentUser.password"></TextField>
-                    <!-- BIRTH DATE -->
-                    <Label text="Birth Date" editable="false" class="label"></Label>
-                    <Label [text]="this.currentUser.user_birthdate" class="label"></Label>
-                    <DatePicker year="1980" month="4" day="20" [minDate]="minDate" [maxDate]="maxDate"
-                        [(ngModel)]="this.currentUser.user_birthdate" (dateChange)="onDateChanged($event)"
-                        (dayChange)="onDayChanged($event)" (monthChange)="onMonthChanged($event)"
-                        (yearChange)="onYearChanged($event)" (loaded)="onDatePickerLoaded($event)"
-                        verticalAlignment="center" [visibility]="birthdatePicker ? 'visible' : 'collapse'">
-                    </DatePicker>
-                    <Button text="BirthDate" class="details-input w-500"  style="height: 35;" (tap)="changeBirthdatePicker()"></Button>
-                    <!-- CITY -->
-                    <Label text="City" editable="false" class="label"></Label>
-                    <TextField class="details-input w-500" [(ngModel)]="this.currentUser.user_city"></TextField>
-                    <!-- FIRST NAME -->
-                    <Label text="First Name" editable="false" class="label"></Label>
-                    <TextField class="details-input w-500" [(ngModel)]="this.currentUser.user_first_name"></TextField>
-                    <!-- LAST NAME -->
-                    <Label text="Last name" editable="false" class="label"></Label>
-                    <TextField [(ngModel)]="this.currentUser.user_last_name" class="details-input w-500"></TextField>
-                    <!-- GENDER -->
-                    <Label text="Gender" editable="false" class="label"></Label>
-                    <!-- need to add here the picker from 3 options -->
-                    <TextField class="details-input w-500" [(ngModel)]="this.currentUser.user_gender"></TextField>
-                    <!-- USERNAME -->
-                    <Label text="Username" editable="false" class="label"></Label>
-                    <TextField [(ngModel)]="this.currentUser.user_username" class="details-input w-500"></TextField>
-                    <!-- DISTANCE -->
-                    <Label text="{{this.currentUser.user_distance + ' Km'}}" class="label"></Label>
-                    <Slider [value]="this.currentUser.user_distance" minValue="0" maxValue="100"
-                        (valueChange)="onSliderValueChange($event)" class="p-0 m-0"></Slider>
-                    <GridLayout rows="*" columns="*, *">
-                        <!-- BUTTON -->
-                        <Button row="0" col="0" text="Save" class="" (tap)="updateDetails()"></Button>
-                        <Button row="0" col="1" text="Profile" style="background-color:black;"
-                            (tap)="defaultDetails()"></Button>
-                    </GridLayout>
-                </StackLayout>
-            </StackLayout>
-        </ScrollView>
-    </StackLayout>
+        <!-- CASE EDIT -->
+        <StackLayout *ngSwitchCase="'edit_details'" (loaded)="onLoaded($event)">
+          <!-- USER ID -->
+          <Label text="User ID" editable="false" class="label"></Label>
+          <Label
+            [text]="this.currentUser.user_uid"
+            class="details-input"
+          ></Label>
+          <!-- EMAIL -->
+          <Label text="Email" editable="false" class="label"></Label>
+          <Label
+            class="details-input"
+            keyboardType="email"
+            [text]="this.currentUser.email"
+          ></Label>
+          <!-- PASSWORD -->
+          <Label text="Password" editable="false" class="label"></Label>
+          <TextField
+            class="details-input w-500"
+            [(ngModel)]="this.currentUser.password"
+          ></TextField>
+          <!-- BIRTH DATE -->
+          <Label text="Birth Date" editable="false" class="label"></Label>
+          <Label [text]="this.currentUser.user_birthdate" class="label"></Label>
+          <DatePicker
+            year="1980"
+            month="4"
+            day="20"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+            [(ngModel)]="this.currentUser.user_birthdate"
+            (dateChange)="onDateChanged($event)"
+            (dayChange)="onDayChanged($event)"
+            (monthChange)="onMonthChanged($event)"
+            (yearChange)="onYearChanged($event)"
+            (loaded)="onDatePickerLoaded($event)"
+            verticalAlignment="center"
+            [visibility]="birthdatePicker ? 'visible' : 'collapse'"
+          >
+          </DatePicker>
+          <Button
+            text="BirthDate"
+            class="details-input w-500"
+            style="height: 35"
+            (tap)="changeBirthdatePicker()"
+          ></Button>
+          <!-- CITY -->
+          <Label text="City" editable="false" class="label"></Label>
+          <TextField
+            class="details-input w-500"
+            [(ngModel)]="this.currentUser.user_city"
+          ></TextField>
+          <!-- FIRST NAME -->
+          <Label text="First Name" editable="false" class="label"></Label>
+          <TextField
+            class="details-input w-500"
+            [(ngModel)]="this.currentUser.user_first_name"
+          ></TextField>
+          <!-- LAST NAME -->
+          <Label text="Last name" editable="false" class="label"></Label>
+          <TextField
+            [(ngModel)]="this.currentUser.user_last_name"
+            class="details-input w-500"
+          ></TextField>
+          <!-- GENDER -->
+          <Label text="Gender" editable="false" class="label"></Label>
+          <!-- need to add here the picker from 3 options -->
+          <TextField
+            class="details-input w-500"
+            [(ngModel)]="this.currentUser.user_gender"
+          ></TextField>
+          <!-- USERNAME -->
+          <Label text="Username" editable="false" class="label"></Label>
+          <TextField
+            [(ngModel)]="this.currentUser.user_username"
+            class="details-input w-500"
+          ></TextField>
+          <!-- DISTANCE -->
+          <Label
+            text="{{ this.currentUser.user_distance + ' Km' }}"
+            class="label"
+          ></Label>
+          <Slider
+            [value]="this.currentUser.user_distance"
+            minValue="0"
+            maxValue="100"
+            (valueChange)="onSliderValueChange($event)"
+            class="p-0 m-0"
+          ></Slider>
+          <GridLayout rows="*" columns="*, *">
+            <!-- BUTTON -->
+            <Button
+              row="0"
+              col="0"
+              text="Save"
+              class=""
+              (tap)="updateDetails()"
+            ></Button>
+            <Button
+              row="0"
+              col="1"
+              text="Profile"
+              style="background-color: black"
+              (tap)="defaultDetails()"
+            ></Button>
+          </GridLayout>
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
 </FlexboxLayout>
+
+

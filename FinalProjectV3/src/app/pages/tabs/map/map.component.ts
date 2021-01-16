@@ -1,125 +1,297 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { registerElement } from '@nativescript/angular/element-registry';
-import { MapView, Marker, Position } from 'nativescript-google-maps-sdk';
+import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
+import { registerElement } from "@nativescript/angular/element-registry";
+import { MapView, Marker, Position } from "nativescript-google-maps-sdk";
 import * as Geolocation from "nativescript-geolocation";
 
 // Important - must register MapView plugin in order to use in Angular templates
-registerElement('MapView', () => MapView);
+registerElement("MapView", () => MapView);
+const firebase = require("nativescript-plugin-firebase/app");
 
 @Component({
-  selector: 'ns-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+    selector: "ns-map",
+    templateUrl: "./map.component.html",
+    styleUrls: ["./map.component.css"],
 })
 export class MapComponent implements OnInit {
+    public latitude: number;
+    public longitude: number;
+    private watchId: number;
 
-  
-  public latitude: number;
-  public longitude: number;
-  private watchId: number;
+    zoom = 8;
+    minZoom = 0;
+    maxZoom = 22;
+    bearing = 0;
+    tilt = 0;
+    padding = [40, 40, 40, 40];
+    mapView: MapView;
+    usersAvailableByActivity = [];
+    userCollection = [];
 
-  zoom = 8;
-  minZoom = 0;
-  maxZoom = 22;
-  bearing = 0;
-  tilt = 0;
-  padding = [40, 40, 40, 40];
-  mapView: MapView;
+    lastCamera: String;
 
-  lastCamera: String;
-
-  constructor(private zone: NgZone) { 
-    this.latitude = 0;
-    this.longitude = 0;
-  }
-
-  ngOnInit(): void {
-    
-  }
-
-  //Map events
-  onMapReady(event) {
-    this.updateLocation()
-    console.log('Map Ready');
-    this.mapView = event.object;
-    this.mapView.zoom = 20
-  }
-
-  placeMarker(){
-    console.log("Setting a marker...");
-    var marker = new Marker();
-    marker.position = Position.positionFromLatLng(this.latitude, this.longitude);
-    marker.title = "My location";
-    marker.snippet = "Israel";
-    marker.userData = { index: 1 };
-
-    this.mapView.addMarker(marker);
-  }
-
-  onCoordinateTapped(args) {
-    console.log("Coordinate Tapped, Lat: " + args.position.latitude + ", Lon: " + args.position.longitude, args);
-  }
-
-  onMarkerEvent(args) {
-    // console.log("Marker Event: '" + args.eventName
-    //   + "' triggered on: " + args.marker.title
-    //   + ", Lat: " + args.marker.position.latitude + ", Lon: " + args.marker.position.longitude, args);
-  }
-
-  onCameraChanged(args) {
-    // console.log("Camera changed: " + JSON.stringify(args.camera), JSON.stringify(args.camera) === this.lastCamera);
-    this.lastCamera = JSON.stringify(args.camera);
-  }
-
-  onCameraMove(args) {
-    // console.log("Camera moving: " + JSON.stringify(args.camera));
-  }
-
-  // GSP
-  private getDeviceLocation(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      Geolocation.enableLocationRequest().then(() => {
-        Geolocation.getCurrentLocation({ timeout: 10000 }).then(location => {
-          resolve(location);
-        }).catch(error => {
-          reject(error);
-        });
-      });
-    });
-  }
-
-  // Get location
-  public updateLocation() {
-    this.getDeviceLocation().then(result => {
-      this.latitude = result.latitude;
-      this.longitude = result.longitude;
-      console.log(`${this.longitude}, ${this.latitude}`)
-      this.placeMarker()
-    }, error => {
-      console.error(error);
-    });
-  }
-
-  // in case that i want to watch over the realtime location
-  public startWatchingLocation() {
-    this.watchId = Geolocation.watchLocation(location => {
-      if (location) {
-        this.zone.run(() => {
-          this.latitude = location.latitude;
-          this.longitude = location.longitude;
-        });
-      }
-    }, error => {
-      console.log(error);
-    }, { updateDistance: 1, minimumUpdateTime: 1000 });
-  }
-
-  // to stop realtime location
-  public stopWatchingLocation() {
-    if (this.watchId) {
-      Geolocation.clearWatch(this.watchId);
-      this.watchId = null;
+    constructor(private zone: NgZone) {
+        this.latitude = 0;
+        this.longitude = 0;
     }
-  }
 
+    countries = [
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+        { item: "test", uid: "321654" },
+    ];
+
+    testt(t) {
+        console.log(t);
+    }
+    ngOnInit() {}
+
+    //Map events
+    onMapReady(event) {
+        this.updateLocation();
+        console.log("Map Ready");
+        this.mapView = event.object;
+        this.mapView.zoom = 20;
+        this.addMarkers();
+    }
+
+    placeMarker() {
+        console.log("Setting a marker...");
+        var marker = new Marker();
+        marker.position = Position.positionFromLatLng(
+            this.latitude,
+            this.longitude
+        );
+        marker.title = "My location";
+        marker.snippet = "Israel";
+        marker.userData = { index: 1 };
+        console.log(marker);
+        this.mapView.addMarker(marker);
+    }
+
+    onCoordinateTapped(args) {
+        console.log(
+            "Coordinate Tapped, Lat: " +
+                args.position.latitude +
+                ", Lon: " +
+                args.position.longitude,
+            args
+        );
+    }
+
+    onMarkerEvent(args) {}
+
+    onCameraChanged(args) {
+        this.lastCamera = JSON.stringify(args.camera);
+    }
+
+    onCameraMove(args) {}
+
+    // GSP
+    private getDeviceLocation(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            Geolocation.enableLocationRequest().then(() => {
+                Geolocation.getCurrentLocation({ timeout: 10000 })
+                    .then((location) => {
+                        resolve(location);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        });
+    }
+
+    // Get location
+    public updateLocation() {
+        this.getDeviceLocation().then(
+            (result) => {
+                this.latitude = result.latitude;
+                this.longitude = result.longitude;
+                console.log(`${this.longitude}, ${this.latitude}`);
+                this.placeMarker();
+                this.addMarkers();
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
+    }
+
+    addMarkers() {
+        firebase
+            .firestore()
+            .collection("sport_places")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+                    const document = doc.data();
+                    const lat = this.latitude + document.lat;
+                    const long = this.longitude + document.long;
+                    this.addMapMarkers(
+                        document.title,
+                        document.snippet,
+                        2,
+                        lat,
+                        long
+                    );
+                });
+            })
+            .catch(function (error) {
+                console.log("Error getting documents: ", error);
+            });
+        // const places = await firebase
+        //     .firestore()
+        //     .collection("sport_places")
+        //     .get();
+        //     places.forEach((doc) => console.log(doc.data()));
+        //     places.forEach((doc: any) => {
+        //     this.addMapMarkers(document.title, document.snippet, 2, document.lat, document.long)
+        // });
+        // this.addMapMarkers(
+        //     "test",
+        //     "test",
+        //     2,
+        //     this.latitude + Math.random(),
+        //     this.longitude + Math.random()
+        // );
+    }
+
+    async getUserName(value) {
+        const user = await firebase
+            .firestore()
+            .collection("users")
+            .where("user_uid", "==", value)
+            .get();
+
+        console.log(user);
+        return user.doc.data();
+    }
+
+    async getUsersByActivity(args: number) {
+        let usersArray = [];
+        await this.getUsers();
+        const usersActivity = await firebase
+            .firestore()
+            .collection("sport_users")
+            .get();
+        usersActivity.forEach((doc) => console.log(doc.data()));
+        usersActivity.forEach((doc: any) => {
+            const document = doc.data();
+            if (document.sport == args) {
+                usersArray.push(document);
+            }
+        });
+        this.usersAvailableByActivity = usersArray;
+        if (args == 1) {
+            this.addMapMarkers(
+                "Basketball stadium",
+                "",
+                2,
+                this.latitude + Math.random() / 10000,
+                this.longitude + Math.random() / 10000
+            );
+        }
+        if (args == 2) {
+            this.addMapMarkers(
+                "Soccer stadium",
+                "",
+                2,
+                this.latitude + Math.random() / 100,
+                this.longitude + Math.random() / 1000
+            );
+        }
+        if (args == 3) {
+            this.addMapMarkers(
+                "Running path",
+                "",
+                2,
+                this.latitude + Math.random() / 10000,
+                this.longitude + Math.random() / 1000
+            );
+        }
+        if (args == 4) {
+            this.addMapMarkers(
+                "Swimming Pool",
+                "",
+                2,
+                this.latitude + Math.random() / 100,
+                this.longitude + Math.random() / 100
+            );
+        }
+    }
+
+    async getUsers() {
+        let usersCol = [];
+        const usersCollection = await firebase
+            .firestore()
+            .collection("users")
+            .get();
+        usersCollection.forEach((doc) => console.log(doc.data()));
+        usersCollection.forEach((doc: any) => {
+            const document = doc.data();
+            usersCol.push(document);
+        });
+        this.userCollection = usersCol;
+    }
+
+    getUserNames(value) {
+        const user: any = this.userCollection.filter(
+            (user) => user.user_uid == value
+        );
+
+        return user[0].email;
+    }
+
+    removeMarkers() {
+        this.mapView.removeAllMarkers();
+    }
+
+    // in case that i want to watch over the realtime location
+    public startWatchingLocation() {
+        this.watchId = Geolocation.watchLocation(
+            (location) => {
+                if (location) {
+                    this.zone.run(() => {
+                        this.latitude = location.latitude;
+                        this.longitude = location.longitude;
+                    });
+                }
+            },
+            (error) => {
+                console.log(error);
+            },
+            { updateDistance: 1, minimumUpdateTime: 1000 }
+        );
+    }
+
+    // to stop realtime location
+    public stopWatchingLocation() {
+        if (this.watchId) {
+            Geolocation.clearWatch(this.watchId);
+            this.watchId = null;
+        }
+    }
+
+    addMapMarkers(
+        title: string,
+        snippet: string,
+        index: number,
+        lat: number,
+        long: number
+    ) {
+        let marker = new Marker();
+        marker.position = Position.positionFromLatLng(lat, long);
+        marker.title = title;
+        marker.snippet = snippet;
+        marker.userData = { index };
+        console.log(marker);
+
+        this.mapView.addMarker(marker);
+    }
 }

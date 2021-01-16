@@ -7,6 +7,7 @@ import { MapComponent } from "./pages/tabs/map/map.component";
 import { ProfileComponent } from "./pages/tabs/profile/profile.component";
 import { HomeComponent } from "./pages/tabs/home/home.component";
 import { ChatComponent } from "./pages/tabs/chat/chat.component";
+import { ChatUserComponent } from "./pages/tabs/chat/chat-user/chat-user.component";
 import { SettingsComponent } from "./pages/tabs/settings/settings.component";
 
 const HomePage = "login"
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: "profile", component: ProfileComponent },
     { path: "home", component: HomeComponent },
     { path: "chat", component: ChatComponent },
+    { path: "chat-user/:id", component: ChatUserComponent },
     { path: "settings", component: SettingsComponent },
 
 ];

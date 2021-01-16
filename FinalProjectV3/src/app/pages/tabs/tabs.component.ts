@@ -11,7 +11,7 @@ import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
 })
 export class TabsComponent implements OnInit {
 
-  constructor(public page: Page, public router: Router) { 
+  constructor(public page: Page, public router: Router) {
     page.actionBarHidden = true;
   }
 
@@ -35,6 +35,6 @@ export class TabsComponent implements OnInit {
     this.router.navigate(['/settings'])
   }
   goToChat() {
-    this.router.navigate(['/chat'])
+    this.router.navigate(['/chat/oHv6fD6ZeqRMHRKEC1wPWaVn53m1'])
   }
 }

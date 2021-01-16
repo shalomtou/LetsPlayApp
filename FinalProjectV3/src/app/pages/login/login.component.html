@@ -1,6 +1,5 @@
 <FlexboxLayout class="page" >
     <StackLayout class="form">
-        <!-- <Button text="login works!" class="btn btn-primary"></Button> -->
         <Image src="~/app/assets/exercise.png" class="logo logo-img "></Image>
         <Label class="logo title" text="LetsPlay" ></Label>
 
@@ -54,6 +53,15 @@
                     <StackLayout class="hr-light"></StackLayout>
                     <!-- Check Password -->
                     <TextField hint="Check Password" class="input item-form" secure="true" [(ngModel)] ="this.user.check_password"></TextField>
+                    <StackLayout class="hr-light"></StackLayout>
+
+                    <TextField hint="First Name" class="input item-form" secure="true" [(ngModel)] ="this.user.user_first_name"></TextField>
+                    <StackLayout class="hr-light"></StackLayout>
+
+                    <TextField hint="Last Name" class="input item-form" secure="true" [(ngModel)] ="this.user.user_last_name"></TextField>
+                    <StackLayout class="hr-light"></StackLayout>
+
+                    <TextField hint="User Name" class="input item-form" secure="true" [(ngModel)] ="this.user.user_username"></TextField>
                     <StackLayout class="hr-light"></StackLayout>
                     <!-- Buttons -->
                     <Button text="Create Account" class="btn btn-login m-t-20 " (tap)="createAccountButton()"></Button>

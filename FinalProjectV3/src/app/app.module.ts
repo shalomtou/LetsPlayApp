@@ -16,9 +16,11 @@ import { MapComponent } from './pages/tabs/map/map.component';
 import { ProfileComponent } from './pages/tabs/profile/profile.component';
 import { HomeComponent } from './pages/tabs/home/home.component';
 import { ChatComponent } from './pages/tabs/chat/chat.component';
+import { ChatUserComponent } from './pages/tabs/chat/chat-user/chat-user.component';
 import { SettingsComponent } from './pages/tabs/settings/settings.component';
 import { TNSCheckBoxModule } from '@nstudio/nativescript-checkbox/angular';
 import { AddPostComponent } from './pages/tabs/home/add-post/add-post.component';
+import { GetUserPipe } from './pipes/get-user.pipe';
 
 
 
@@ -48,6 +50,8 @@ import { AddPostComponent } from './pages/tabs/home/add-post/add-post.component'
         ChatComponent,
         SettingsComponent,
         AddPostComponent,
+        GetUserPipe,
+        ChatUserComponent,
     ],
     providers: [],
     schemas: [
