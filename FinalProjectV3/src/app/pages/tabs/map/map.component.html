@@ -9,6 +9,7 @@
         src="res://basketball"
         width="70"
         height="70"
+        [ngClass]="imageTyped === 1 ? 'image-active' : ''"
       ></Image>
       <Image
         (tap)="getUsersByActivity(2)"
@@ -16,6 +17,7 @@
         src="res://football"
         width="70"
         height="70"
+        [ngClass]="imageTyped === 2 ? 'image-active' : ''"
       ></Image>
       <Image
         (tap)="getUsersByActivity(3)"
@@ -23,6 +25,7 @@
         src="res://running"
         width="70"
         height="70"
+        [ngClass]="imageTyped === 3 ? 'image-active' : ''"
       ></Image>
       <Image
         (tap)="getUsersByActivity(4)"
@@ -30,6 +33,7 @@
         src="res://swimmer"
         width="70"
         height="70"
+        [ngClass]="imageTyped === 4 ? 'image-active' : ''"
       ></Image>
     </FlexboxLayout>
   </StackLayout>
@@ -58,17 +62,11 @@
   </StackLayout>
   <StackLayout height="20%" class="title">
     <Label text="Potential Users For Chosen Activity"></Label>
-
-    <!-- <ListView height="150" [items]="usersAvailableByActivity" *ngIf="usersAvailableByActivity.length">
-      <ng-template let-item="item" let-uid="uid">
-        <FlexboxLayout flexDirection="row" justifyItems="center" alignItems="center">
-          <Image flexGrow="1" src="res://football" width="70" height="70"></Image>
-          <Label flexGrow="1" [nsRouterLink]="['/chat-user', item.user]" [text]="getUserNames(item.user)"></Label>
-        </FlexboxLayout>
-      </ng-template>
-    </ListView> -->
-
-    <ListView [items]="usersAvailableByActivity" *ngIf="usersAvailableByActivity.length" style="height: 1250px">
+    <ListView
+      [items]="usersAvailableByActivity"
+      *ngIf="usersAvailableByActivity.length"
+      style="height: 1250px"
+    >
       <ng-template let-user="item" let-uid="uid">
         <FlexboxLayout
           flexDirection="row"

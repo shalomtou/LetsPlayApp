@@ -24,3 +24,9 @@
     overflow: scroll;
     /* scroll-behavior: auto; */
 }
+
+.image-active {
+    border-width: 3;
+    border-color: orangered;
+    border-radius: 20;
+}

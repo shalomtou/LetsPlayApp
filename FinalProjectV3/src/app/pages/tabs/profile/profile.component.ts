@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { Slider } from "tns-core-modules/ui/slider";
 import { DatePicker } from "tns-core-modules/ui/date-picker";
 import { User, UserService } from "../../../services/user.service";
+import { MultiSelect, AShowType } from "nativescript-multi-select";
+import { MSOption } from "nativescript-multi-select";
 const firebase = require("nativescript-plugin-firebase/app");
 
 @Component({
@@ -12,6 +14,12 @@ const firebase = require("nativescript-plugin-firebase/app");
 export class ProfileComponent implements OnInit {
     user = firebase.auth().currentUser;
     currentUser = new User();
+    private _MSelect: MultiSelect;
+    private predefinedItems: Array<any> = [];
+    public selectedItems: Array<any> = [];
+    public userInterests: Array<any> = [];
+    public userInterestsDocIds: Array<any> = [];
+
     currentUserId: string;
     // Adding label picker to be able to edit
     public labelPicker: string = "default";
@@ -26,10 +34,102 @@ export class ProfileComponent implements OnInit {
     public usersCollection = firebase.firestore().collection("users");
     public loggedinUser = this.usersCollection.doc(this.user.uid);
 
-    constructor(private userService: UserService) {}
+    constructor(private userService: UserService, private zone: NgZone) {
+        this._MSelect = new MultiSelect();
+        this.predefinedItems = [];
+    }
 
-    ngOnInit(): void {
+    async ngOnInit() {
         this.currentUserId = this.userService.currentUser.value.user_uid;
+    }
+
+    async findSportInterests() {
+        this.userInterests = await firebase
+            .firestore()
+            .collection("sport_users")
+            .get();
+        this.userInterests.forEach((doc: any) => {
+            const document = doc.data();
+            if (document.user == this.currentUserId) {
+                this.userInterestsDocIds.push(doc.id);
+                this.predefinedItems.push(document.sport);
+            }
+        });
+    }
+
+    async defineNewSportInterest() {
+        this.userInterests.forEach((doc: any) => {
+            const document = doc.data();
+            if (document.user == this.currentUserId) {
+                console.log(document);
+                this.predefinedItems.push(document.sport);
+            }
+        });
+    }
+
+    public async onSelectTapped() {
+        await this.findSportInterests();
+        const options: MSOption = {
+            title: "Please Select",
+            selectedItems: this.predefinedItems,
+            items: [
+                { name: "Basketball", value: "1" },
+                { name: "Football", value: "2" },
+                { name: "Running", value: "3" },
+                { name: "Swimming", value: "4" },
+            ],
+            bindValue: "value",
+            displayLabel: "name",
+            onConfirm: (selectedItems) => {
+                this.zone.run(async () => {
+                    this.userInterestsDocIds = [];
+                    await this.findSportInterests();
+                    this.selectedItems = selectedItems;
+                    this.predefinedItems = selectedItems;
+                    if (this.userInterestsDocIds.length) {
+                        console.log(this.userInterestsDocIds);
+                        for (let docId of this.userInterestsDocIds) {
+                            firebase
+                                .firestore()
+                                .collection("sport_users")
+                                .doc(docId)
+                                .delete();
+                        }
+                        for (let item of this.selectedItems) {
+                            const itemToAdd = {
+                                user: this.currentUserId,
+                                sport: item,
+                            };
+                            firebase
+                                .firestore()
+                                .collection("sport_users")
+                                .add(itemToAdd);
+                        }
+                    }
+                    console.log("SELECTED ITEMS => ", selectedItems);
+                });
+            },
+            onItemSelected: (selectedItem) => {
+                console.log("SELECTED ITEM => ", selectedItem);
+            },
+            onCancel: () => {
+                console.log("CANCEL");
+            },
+            android: {
+                titleSize: 25,
+                cancelButtonTextColor: "#252323",
+                confirmButtonTextColor: "#70798C",
+            },
+            ios: {
+                cancelButtonBgColor: "#252323",
+                confirmButtonBgColor: "#70798C",
+                cancelButtonTextColor: "#ffffff",
+                confirmButtonTextColor: "#ffffff",
+                showType: AShowType.TypeBounceIn,
+            },
+        };
+
+        this._MSelect.show(options);
     }
 
     // change to EDIT
@@ -42,7 +142,6 @@ export class ProfileComponent implements OnInit {
     }
 
     onLoaded(event) {
-        console.log(this.currentUser);
         this.loggedinUser.get().then((doc) => {
             if (doc.exists) {
                 console.log(`Document data: ${JSON.stringify(doc.data())}`);
@@ -63,6 +162,10 @@ export class ProfileComponent implements OnInit {
 
     updateDetails() {
         alert(`saving details...`);
+        const userToUpdate = firebase.auth().currentUser;
+        console.log("user ==> ", userToUpdate);
+        // userToUpdate.updatePassword(this.currentUser.password)
+        //     .then(function () {
         const userDocument = firebase
             .firestore()
             .collection("users")
@@ -84,6 +187,11 @@ export class ProfileComponent implements OnInit {
             })
             .then(() => {
                 console.log(`${this.user.uid} updated`);
+            })
+            // Update successful.
+            // })
+            .catch(function (error) {
+                alert("An error occured");
             });
     }
 

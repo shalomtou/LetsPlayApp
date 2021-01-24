@@ -5,7 +5,7 @@
       text="Details"
       style="font-weight: 800; margin-top: 5"
     ></Label>
-    <ScrollView height="580">
+    <ScrollView height="1250px">
       <StackLayout [ngSwitch]="labelPicker">
         <StackLayout *ngSwitchCase="'default'" (loaded)="onLoaded($event)">
           <!-- user_img -->
@@ -166,6 +166,9 @@
             [(ngModel)]="this.currentUser.user_username"
             class="details-input w-500"
           ></TextField>
+          <!-- Sport fields-->
+          <Label text="Sport interests" editable="false" class="label"></Label>
+          <Button text="Edit interests" (tap)="onSelectTapped()"></Button>
           <!-- DISTANCE -->
           <Label
             text="{{ this.currentUser.user_distance + ' Km' }}"
@@ -178,23 +181,14 @@
             (valueChange)="onSliderValueChange($event)"
             class="p-0 m-0"
           ></Slider>
-          <GridLayout rows="*" columns="*, *">
-            <!-- BUTTON -->
-            <Button
+          <Button
               row="0"
               col="0"
               text="Save"
               class=""
               (tap)="updateDetails()"
             ></Button>
-            <Button
-              row="0"
-              col="1"
-              text="Profile"
-              style="background-color: black"
-              (tap)="defaultDetails()"
-            ></Button>
-          </GridLayout>
+
         </StackLayout>
       </StackLayout>
     </ScrollView>

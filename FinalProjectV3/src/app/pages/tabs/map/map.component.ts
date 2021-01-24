@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, NgZone } from "@angular/core";
 import { registerElement } from "@nativescript/angular/element-registry";
 import { MapView, Marker, Position } from "nativescript-google-maps-sdk";
 import * as Geolocation from "nativescript-geolocation";
+import { UserService } from "../../../services/user.service";
 
 // Important - must register MapView plugin in order to use in Angular templates
 registerElement("MapView", () => MapView);
@@ -15,6 +16,7 @@ const firebase = require("nativescript-plugin-firebase/app");
 export class MapComponent implements OnInit {
     public latitude: number;
     public longitude: number;
+    public imageTyped: number;
     private watchId: number;
 
     zoom = 8;
@@ -26,28 +28,18 @@ export class MapComponent implements OnInit {
     mapView: MapView;
     usersAvailableByActivity = [];
     userCollection = [];
+    currentUserId: string;
 
     lastCamera: String;
 
-    constructor(private zone: NgZone) {
+    constructor(private zone: NgZone, private userService: UserService) {
         this.latitude = 0;
         this.longitude = 0;
     }
 
-    countries = [
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-        { item: "test", uid: "321654" },
-    ];
-
-    testt(t) {
-        console.log(t);
+    ngOnInit() {
+        this.currentUserId = this.userService.currentUser.value.user_uid;
     }
-    ngOnInit() {}
 
     //Map events
     onMapReady(event) {
@@ -145,21 +137,6 @@ export class MapComponent implements OnInit {
             .catch(function (error) {
                 console.log("Error getting documents: ", error);
             });
-        // const places = await firebase
-        //     .firestore()
-        //     .collection("sport_places")
-        //     .get();
-        //     places.forEach((doc) => console.log(doc.data()));
-        //     places.forEach((doc: any) => {
-        //     this.addMapMarkers(document.title, document.snippet, 2, document.lat, document.long)
-        // });
-        // this.addMapMarkers(
-        //     "test",
-        //     "test",
-        //     2,
-        //     this.latitude + Math.random(),
-        //     this.longitude + Math.random()
-        // );
     }
 
     async getUserName(value) {
@@ -175,6 +152,7 @@ export class MapComponent implements OnInit {
 
     async getUsersByActivity(args: number) {
         let usersArray = [];
+        this.imageTyped = 0;
         await this.getUsers();
         const usersActivity = await firebase
             .firestore()
@@ -183,11 +161,15 @@ export class MapComponent implements OnInit {
         usersActivity.forEach((doc) => console.log(doc.data()));
         usersActivity.forEach((doc: any) => {
             const document = doc.data();
-            if (document.sport == args) {
+            if (
+                document.sport == args &&
+                document.user !== this.currentUserId
+            ) {
                 usersArray.push(document);
             }
         });
         this.usersAvailableByActivity = usersArray;
+        this.imageTyped = args;
         if (args == 1) {
             this.addMapMarkers(
                 "Basketball stadium",
