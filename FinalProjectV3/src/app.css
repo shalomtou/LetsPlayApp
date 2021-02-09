@@ -105,6 +105,16 @@ Button.-primary {
     height: auto;
 }
 
+.sub-title-register{
+    horizontal-align: center;
+    font-size: 25;
+    font-weight: 200;
+    /* margin-bottom: 10; */
+    text-align: center;
+    color: black;
+    height: auto;
+}
+
 
 .btn {
     font-size: 18;
@@ -126,8 +136,9 @@ Button.-primary {
 }
 
 .forgot_password {
-    font-size: 12;
+    font-size: 14;
     text-align: center;
+    text-decoration: underline;
 }
 
 .f-s-35 {
@@ -135,9 +146,16 @@ Button.-primary {
 }
 
 .input {
-    font-size: 18;
+    font-size: 16;
     color: rgba(0, 0, 0, 0.767);
     padding-left: 5;
+}
+
+.input.item-form{
+    font-size: 16;
+    color: rgba(0, 0, 0, 0.767);
+    padding-left: 5;
+    margin: 0;
 }
 
 .label {
@@ -173,3 +191,14 @@ Button.-primary {
     width: 500;
 }
 
+
+.picker {
+    background-color: white;
+    color: white;
+    border-color: white;
+    border-radius: 20;
+    border-width: 2;
+    width: 200;
+    height: 100;
+    vertical-align: middle;
+}

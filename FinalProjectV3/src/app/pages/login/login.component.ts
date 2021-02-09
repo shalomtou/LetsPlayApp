@@ -27,6 +27,8 @@ const firebase = require("nativescript-plugin-firebase/app");
 export class LoginComponent implements OnInit {
     public labelPicker: string;
     public user = new User();
+    public tmpUser =`amitush27@gmail.com` 
+    public tmpPass = `271992`
 
     constructor(public page: Page, public router: Router, private userService: UserService) {
         page.actionBarHidden = true;
@@ -38,14 +40,14 @@ export class LoginComponent implements OnInit {
     loginButton() {
         firebase
             .auth()
-            .signInWithEmailAndPassword(this.user.email, this.user.password)
+            .signInWithEmailAndPassword(this.tmpUser, this.tmpPass)
             .then((res) => {
                 console.log(`User ${this.user.email} logged in`);
                 console.log('res ', res);
                 this.user.user_uid = res.user.uid;
                 this.userService.setActiveUser(this.user);
                 this.router.navigate(["/tabs"]);
-                TNSFancyAlert.showSuccess(`login ${res.user.uid}`);
+                // TNSFancyAlert.showSuccess(`loged`);
             })
             .catch((err) => {
                 console.log("Login error: " + JSON.stringify(err));

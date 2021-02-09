@@ -1,9 +1,27 @@
-import { Component, NgZone, OnInit } from "@angular/core";
-import { Slider } from "tns-core-modules/ui/slider";
-import { DatePicker } from "tns-core-modules/ui/date-picker";
-import { User, UserService } from "../../../services/user.service";
-import { MultiSelect, AShowType } from "nativescript-multi-select";
-import { MSOption } from "nativescript-multi-select";
+import {
+    Component,
+    NgZone,
+    OnInit
+} from "@angular/core";
+import {
+    Slider
+} from "tns-core-modules/ui/slider";
+import {
+    DatePicker
+} from "tns-core-modules/ui/date-picker";
+import {
+    User,
+    UserService
+} from "../../../services/user.service";
+import {
+    MultiSelect,
+    AShowType
+} from "nativescript-multi-select";
+import {
+    MSOption
+} from "nativescript-multi-select";
+import { EventData } from "tns-core-modules/ui/core/view";
+import { ListPicker } from "tns-core-modules/ui/list-picker";
 const firebase = require("nativescript-plugin-firebase/app");
 
 @Component({
@@ -15,10 +33,10 @@ export class ProfileComponent implements OnInit {
     user = firebase.auth().currentUser;
     currentUser = new User();
     private _MSelect: MultiSelect;
-    private predefinedItems: Array<any> = [];
-    public selectedItems: Array<any> = [];
-    public userInterests: Array<any> = [];
-    public userInterestsDocIds: Array<any> = [];
+    private predefinedItems: Array < any > = [];
+    public selectedItems: Array < any > = [];
+    public userInterests: Array < any > = [];
+    public userInterestsDocIds: Array < any > = [];
 
     currentUserId: string;
     // Adding label picker to be able to edit
@@ -28,6 +46,7 @@ export class ProfileComponent implements OnInit {
     minDate: Date = new Date(1975, 0, 29);
     maxDate: Date = new Date(2045, 4, 12);
     public datePicker;
+    public genders:Array<string>= [`Male`,`Female`,`None`]
 
     public distance = 0;
 
@@ -37,6 +56,13 @@ export class ProfileComponent implements OnInit {
     constructor(private userService: UserService, private zone: NgZone) {
         this._MSelect = new MultiSelect();
         this.predefinedItems = [];
+    }
+
+    public onSelectedIndexChanged(args: EventData) {
+        const picker = <ListPicker>args.object;
+        console.log(`index: ${picker.selectedIndex}; item" ${this.genders[picker.selectedIndex]}`);
+        this.currentUser.user_gender = this.genders[picker.selectedIndex]
+        console.log(this.currentUser.user_gender)
     }
 
     async ngOnInit() {
@@ -72,11 +98,22 @@ export class ProfileComponent implements OnInit {
         const options: MSOption = {
             title: "Please Select",
             selectedItems: this.predefinedItems,
-            items: [
-                { name: "Basketball", value: "1" },
-                { name: "Football", value: "2" },
-                { name: "Running", value: "3" },
-                { name: "Swimming", value: "4" },
+            items: [{
+                    name: "Basketball",
+                    value: "1"
+                },
+                {
+                    name: "Football",
+                    value: "2"
+                },
+                {
+                    name: "Running",
+                    value: "3"
+                },
+                {
+                    name: "Swimming",
+                    value: "4"
+                },
             ],
             bindValue: "value",
             displayLabel: "name",
@@ -154,7 +191,7 @@ export class ProfileComponent implements OnInit {
 
     // Distance functions
     onSliderValueChange(args) {
-        let slider = <Slider>args.object;
+        let slider = < Slider > args.object;
         console.log(`Slider new value ${args.value}`);
         this.distance = args.value;
         this.currentUser.user_distance = this.distance;
@@ -164,8 +201,6 @@ export class ProfileComponent implements OnInit {
         alert(`saving details...`);
         const userToUpdate = firebase.auth().currentUser;
         console.log("user ==> ", userToUpdate);
-        // userToUpdate.updatePassword(this.currentUser.password)
-        //     .then(function () {
         const userDocument = firebase
             .firestore()
             .collection("users")
@@ -187,13 +222,23 @@ export class ProfileComponent implements OnInit {
             })
             .then(() => {
                 console.log(`${this.user.uid} updated`);
+                this.updatePass(this.currentUser.password)
             })
-            // Update successful.
-            // })
             .catch(function (error) {
                 alert("An error occured");
+                console.log(error)
             });
     }
+
+    updatePass(pass) {
+        firebase.auth().updatePassword(pass)
+        .then(() => {
+            console.log("Password updated")
+            this.defaultDetails()
+        })
+        .catch(error => console.log("Error updating password: " + error));
+    }
+
 
     // Birthdate functions
     changeBirthdatePicker() {
